@@ -1,7 +1,7 @@
 [project]
 name = "lec-to-text"
 version = "0.1.0"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "transformers>=5.13.0",
     "yt-dlp>=2026.7.4",
