@@ -1,0 +1,27 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.env
+
+# Данные проекта
+output/
+data/
+
+# Временные файлы downloader (tempfile.mkdtemp(prefix="lec2text_"))
+lec2text_*/
+*.temp_*
+
+# Артефакты отладки и результаты
+info.json
+*.srt
+*.vtt
+
+# IDE
+.idea/
