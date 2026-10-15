@@ -14,7 +14,7 @@
 - Зависимости: `yt-dlp[default]` (+ `yt-dlp-ejs`), `curl-cffi`, `python-dotenv`,
   `transformers` (задел под ASR-фазу).
 - Системные требования: **ffmpeg/ffprobe** и **deno >= 2.3** в `PATH`.
-- Машина — **CPU-only** (Intel i3-10105, 4c/8t, 15 GB RAM). GPU нет.
+- Машина — **CPU-only**. GPU нет.
 
 ## Команды
 

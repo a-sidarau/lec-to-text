@@ -46,6 +46,16 @@ DEFAULT_PLAYER_CLIENTS = ("default", "android_vr", "web_safari", "mweb")
 # ejs:github — скачивать их с GitHub (нужен JS-рантайм, у нас deno).
 DEFAULT_REMOTE_COMPONENTS = ("ejs:github",)
 
+# Настройка GROQ API
+DEFAULT_GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+DEFAULT_ASR_MODEL = "whisper-large-v3-turbo"
+DEFAULT_ASR_LANGUAGE = "ru"
+# Нарезка под лимит Groq 25 MB (20 мин при 48 kbps ≈ 7 MB)
+DEFAULT_CHUNK_SECONDS = 1200
+DEFAULT_CHUNK_BITRATE = "48k"
+DEFAULT_CHUNK_OVERLAP = 1.0
+DEFAULT_REQUEST_TIMEOUT = 300
+
 
 # ---------------------------------------------------------------------------
 # Небольшие парсеры переменных окружения: строки -> нужный тип.
@@ -125,9 +135,16 @@ class Settings:
     asr_channels: int = 1  # моно
     asr_format: str = "wav"  # контейнер для ASR
 
-    # --- Задел под ASR (используется на следующих фазах) -------------------
+    # --- ASR (Transcription)-------------------
     hf_token: str | None = None  # токен Hugging Face
     groq_api_key: str | None = None  # ключ Groq (API-ASR, режим по умолчанию для длинных)
+    groq_base_url: str = DEFAULT_GROQ_BASE_URL
+    asr_model: str = DEFAULT_ASR_MODEL
+    asr_language: str | None = DEFAULT_ASR_LANGUAGE
+    chunk_seconds: int = DEFAULT_CHUNK_SECONDS
+    chunk_bitrate: str = DEFAULT_CHUNK_BITRATE
+    chunk_overlap: float = DEFAULT_CHUNK_OVERLAP
+    request_timeout: int = DEFAULT_REQUEST_TIMEOUT
 
     # ----------------------------------------------------------------------
     @classmethod
@@ -171,6 +188,13 @@ class Settings:
             asr_format=os.getenv("LEC2TEXT_ASR_FORMAT", "wav"),
             hf_token=os.getenv("HF_TOKEN") or None,
             groq_api_key=os.getenv("GROQ_API_KEY") or None,
+            groq_base_url=os.getenv("LEC2TEXT_GROQ_BASE_URL") or DEFAULT_GROQ_BASE_URL,
+            asr_model=os.getenv("LEC2TEXT_ASR_MODEL") or DEFAULT_ASR_MODEL,
+            asr_language=os.getenv("LEC2TEXT_ASR_LANGUAGE", DEFAULT_ASR_LANGUAGE) or None,
+            chunk_seconds=_as_int(os.getenv("LEC2TEXT_CHUNK_SECONDS"), DEFAULT_CHUNK_SECONDS),
+            chunk_bitrate=os.getenv("LEC2TEXT_CHUNK_BITRATE") or DEFAULT_CHUNK_BITRATE,
+            chunk_overlap=_as_float(os.getenv("LEC2TEXT_CHUNK_OVERLAP"), DEFAULT_CHUNK_OVERLAP),
+            request_timeout=_as_int(os.getenv("LEC2TEXT_REQUEST_TIMEOUT"), DEFAULT_REQUEST_TIMEOUT),
         )
 
     def ensure_dirs(self) -> None:

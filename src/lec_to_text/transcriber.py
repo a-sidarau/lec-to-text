@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
-from __future__ import annotations
 
 
 @dataclass(slots=True)
@@ -24,5 +25,4 @@ class TranscriptResult:
 class Transcriber(Protocol):
     def transcribe(
         self, audio_path: str | Path, *, language: str | None = None
-    ) -> TranscriptResult:
-        ...
+    ) -> TranscriptResult: ...
