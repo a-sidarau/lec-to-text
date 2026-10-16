@@ -16,6 +16,7 @@ import logging
 import shutil
 import subprocess
 from dataclasses import dataclass
+from math import ceil
 from pathlib import Path
 
 from .config import Settings
@@ -34,6 +35,14 @@ class AudioInfo:
     sample_rate: int | None  # Гц
     channels: int | None  # 1 = моно, 2 = стерео
     format_name: str | None  # контейнер, например "mov,mp4,m4a,..."
+
+
+@dataclass(slots=True)
+class AudioChunk:
+    """Модель данных для аудио-чанка, нарезаемого ffmpeg"""
+    path: Path
+    start: float
+    end: float
 
 
 # ---------------------------------------------------------------------------
@@ -56,8 +65,7 @@ def _tool(name: str, ffmpeg_location: str | None = None) -> str:
     found = shutil.which(name)
     if not found:
         raise MediaToolError(
-            f"Не найден {name}. Установите ffmpeg (в Ubuntu: sudo apt install ffmpeg) "
-            "или задайте LEC2TEXT_FFMPEG_LOCATION."
+            f"Не найден {name}. Установите ffmpeg или задайте LEC2TEXT_FFMPEG_LOCATION в .env."
         )
     return found
 
@@ -260,3 +268,76 @@ def to_asr_wav(
         channels=channels,
         ffmpeg_location=location,
     )
+
+
+def split_audio(
+    src: Path | str,
+    dst_dir: Path | str,
+    *,
+    chunk_seconds: int,
+    overlap: float,
+    bitrate: str,
+    sample_rate: int = 16000,
+    channels: int = 1,
+    ffmpeg_location: str | None = None,
+) -> list[AudioChunk]:
+    """Нарезает дорожку на чанки, чтобы уложиться в лимиты ASR (25 МБ для GROQ)"""
+    if chunk_seconds <= 0:
+        raise ValueError("Длина чанков (chunk_seconds) должна быть > 0")
+    if not 0 <= overlap < chunk_seconds:
+        raise ValueError("overlap должен быть >=0 и меньше длины чанков")
+
+    src = Path(src)
+    info = probe_audio(src, ffmpeg_location=ffmpeg_location)
+    duration = info.duration
+    if duration is None:
+        raise AudioConversionError("ffprobe не вернул длительность")
+
+    ffmpeg = _tool("ffmpeg", ffmpeg_location)
+    dst_dir = Path(dst_dir)
+    dst_dir.mkdir(parents=True, exist_ok=True)
+
+    step = chunk_seconds - overlap
+    min_tail = 1.0
+
+    chunks: list[AudioChunk] = []
+    chunks_amount = ceil(duration / step)
+
+    for i in range(chunks_amount):
+        start = i * step
+        if start >= duration:
+            break
+        end = min(start + chunk_seconds, duration)
+        if end - start < min_tail:
+            break
+
+        out = dst_dir / f"{src.stem}.part-{i:03d}.mp3"
+        cmd = [
+            ffmpeg,
+            "-hide_banner",
+            "-nostdin",
+            "-loglevel",
+            "error",
+            "-y",
+            "-ss",
+            f"{start:.3f}",
+            "-t",
+            f"{end - start:.3f}",
+            "-i",
+            str(src),
+            "-vn",
+            "-ac",
+            str(channels),
+            "-ar",
+            str(sample_rate),
+            "-b:a",
+            bitrate,
+            str(out),
+        ]
+        _run(cmd)
+
+        chunks.append(AudioChunk(path=out, start=start, end=end))
+
+    if not chunks:
+        raise AudioConversionError("Не удалось разделить на чанки")
+    return chunks

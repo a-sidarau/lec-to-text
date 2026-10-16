@@ -1,6 +1,13 @@
 from __future__ import annotations
 
-from .audio import AudioInfo, extract_audio, probe_audio, to_asr_wav
+from .audio import (
+    AudioInfo,
+    AudioChunk,
+    extract_audio,
+    probe_audio,
+    to_asr_wav,
+    split_audio
+)
 from .config import Settings
 from .downloader import (
     AudioDownloader,
@@ -30,6 +37,7 @@ __all__ = [
     "AudioConversionError",
     "AudioDownloader",
     "AudioInfo",
+    "AudioChunk",
     "BotCheckError",
     "DownloadError",
     "DownloadForbiddenError",
@@ -51,6 +59,7 @@ __all__ = [
     "extract_audio",
     "is_youtube",
     "probe_audio",
+    "split_audio",
     "resolve",
     "to_asr_wav",
 ]
