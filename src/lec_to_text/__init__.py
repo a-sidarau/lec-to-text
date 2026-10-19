@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .audio import AudioInfo, AudioChunk, extract_audio, probe_audio, to_asr_wav, split_audio
+from .audio import AudioChunk, AudioInfo, extract_audio, probe_audio, split_audio, to_asr_wav
 from .config import Settings
 from .downloader import (
     AudioDownloader,
@@ -27,10 +27,10 @@ from .inputs import InputKind, ResolvedInput, is_youtube, resolve
 __version__ = "0.1.0"
 
 __all__ = [
+    "AudioChunk",
     "AudioConversionError",
     "AudioDownloader",
     "AudioInfo",
-    "AudioChunk",
     "BotCheckError",
     "DownloadError",
     "DownloadForbiddenError",
@@ -52,7 +52,7 @@ __all__ = [
     "extract_audio",
     "is_youtube",
     "probe_audio",
-    "split_audio",
     "resolve",
+    "split_audio",
     "to_asr_wav",
 ]

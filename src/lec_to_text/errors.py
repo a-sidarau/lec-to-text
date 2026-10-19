@@ -77,9 +77,11 @@ class MediaToolError(Lec2TextError):
 class AudioConversionError(MediaToolError):
     """Не удалось конвертировать/извлечь аудио."""
 
+
 # ---------------------------------------------------------------------------
 # Транскрибация
 # ---------------------------------------------------------------------------
+
 
 class TranscriptionError(Lec2TextError):
     """Ошибка транскрибации текста (внешним или локлаьным)"""
@@ -91,6 +93,7 @@ class AsrAuthError(TranscriptionError):
 
 class AsrApiError(TranscriptionError):
     """Временный сбой API"""
+
     def __init__(self, message: str, *, retry_after: float | None = None) -> None:
         super().__init__(message)
         self.retry_after = retry_after

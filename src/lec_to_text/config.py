@@ -55,8 +55,8 @@ DEFAULT_CHUNK_SECONDS = 1200
 DEFAULT_CHUNK_BITRATE = "48k"
 DEFAULT_CHUNK_OVERLAP = 1.0
 DEFAULT_REQUEST_TIMEOUT = 300
-DEFAULT_ASR_MAX_ATTEMPTS=3
-DEFAULT_ASR_RETRY_BASE_DELAY=2.0
+DEFAULT_ASR_MAX_ATTEMPTS = 3
+DEFAULT_ASR_RETRY_BASE_DELAY = 2.0
 
 
 # ---------------------------------------------------------------------------
@@ -199,8 +199,12 @@ class Settings:
             chunk_bitrate=os.getenv("LEC2TEXT_CHUNK_BITRATE") or DEFAULT_CHUNK_BITRATE,
             chunk_overlap=_as_float(os.getenv("LEC2TEXT_CHUNK_OVERLAP"), DEFAULT_CHUNK_OVERLAP),
             request_timeout=_as_int(os.getenv("LEC2TEXT_REQUEST_TIMEOUT"), DEFAULT_REQUEST_TIMEOUT),
-            asr_max_attempts=_as_int(os.getenv("LEC2TEXT_ASR_MAX_ATTEMPTS"), DEFAULT_ASR_MAX_ATTEMPTS),
-            asr_retry_base_delay=_as_float(os.getenv("LEC2TEXT_ASR_RETRY_BASE_DELAY"), DEFAULT_ASR_RETRY_BASE_DELAY)
+            asr_max_attempts=_as_int(
+                os.getenv("LEC2TEXT_ASR_MAX_ATTEMPTS"), DEFAULT_ASR_MAX_ATTEMPTS
+            ),
+            asr_retry_base_delay=_as_float(
+                os.getenv("LEC2TEXT_ASR_RETRY_BASE_DELAY"), DEFAULT_ASR_RETRY_BASE_DELAY
+            ),
         )
 
     def ensure_dirs(self) -> None:
