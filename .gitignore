@@ -13,6 +13,7 @@ wheels/
 # Данные проекта
 output/
 data/
+tmp/
 
 # Временные файлы downloader (tempfile.mkdtemp(prefix="lec2text_"))
 lec2text_*/

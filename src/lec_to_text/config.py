@@ -55,6 +55,8 @@ DEFAULT_CHUNK_SECONDS = 1200
 DEFAULT_CHUNK_BITRATE = "48k"
 DEFAULT_CHUNK_OVERLAP = 1.0
 DEFAULT_REQUEST_TIMEOUT = 300
+DEFAULT_ASR_MAX_ATTEMPTS=3
+DEFAULT_ASR_RETRY_BASE_DELAY=2.0
 
 
 # ---------------------------------------------------------------------------
@@ -140,11 +142,13 @@ class Settings:
     groq_api_key: str | None = None  # ключ Groq (API-ASR, режим по умолчанию для длинных)
     groq_base_url: str = DEFAULT_GROQ_BASE_URL
     asr_model: str = DEFAULT_ASR_MODEL
-    asr_language: str | None = DEFAULT_ASR_LANGUAGE
+    asr_language: str = DEFAULT_ASR_LANGUAGE
     chunk_seconds: int = DEFAULT_CHUNK_SECONDS
     chunk_bitrate: str = DEFAULT_CHUNK_BITRATE
     chunk_overlap: float = DEFAULT_CHUNK_OVERLAP
     request_timeout: int = DEFAULT_REQUEST_TIMEOUT
+    asr_max_attempts: int = DEFAULT_ASR_MAX_ATTEMPTS
+    asr_retry_base_delay: float = DEFAULT_ASR_RETRY_BASE_DELAY
 
     # ----------------------------------------------------------------------
     @classmethod
@@ -195,6 +199,8 @@ class Settings:
             chunk_bitrate=os.getenv("LEC2TEXT_CHUNK_BITRATE") or DEFAULT_CHUNK_BITRATE,
             chunk_overlap=_as_float(os.getenv("LEC2TEXT_CHUNK_OVERLAP"), DEFAULT_CHUNK_OVERLAP),
             request_timeout=_as_int(os.getenv("LEC2TEXT_REQUEST_TIMEOUT"), DEFAULT_REQUEST_TIMEOUT),
+            asr_max_attempts=_as_int(os.getenv("LEC2TEXT_ASR_MAX_ATTEMPTS"), DEFAULT_ASR_MAX_ATTEMPTS),
+            asr_retry_base_delay=_as_float(os.getenv("LEC2TEXT_ASR_RETRY_BASE_DELAY"), DEFAULT_ASR_RETRY_BASE_DELAY)
         )
 
     def ensure_dirs(self) -> None:

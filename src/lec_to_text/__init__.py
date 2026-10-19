@@ -1,13 +1,6 @@
 from __future__ import annotations
 
-from .audio import (
-    AudioInfo,
-    AudioChunk,
-    extract_audio,
-    probe_audio,
-    to_asr_wav,
-    split_audio
-)
+from .audio import AudioInfo, AudioChunk, extract_audio, probe_audio, to_asr_wav, split_audio
 from .config import Settings
 from .downloader import (
     AudioDownloader,

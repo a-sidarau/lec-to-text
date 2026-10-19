@@ -40,6 +40,7 @@ class AudioInfo:
 @dataclass(slots=True)
 class AudioChunk:
     """Модель данных для аудио-чанка, нарезаемого ffmpeg"""
+
     path: Path
     start: float
     end: float
