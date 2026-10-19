@@ -11,7 +11,7 @@ dependencies = [
     # Чтение .env
     "python-dotenv>=1.2",
     # Оставлено под ASR-фазу (реализуется отдельно).
-    "transformers>=5.13.0",
+    "httpx>=0.28.1",
 ]
 
 [build-system]

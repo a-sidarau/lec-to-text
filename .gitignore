@@ -9,11 +9,15 @@ wheels/
 # Virtual environments
 .venv
 .env
+.idea
+.ruff_cache
+.pytest_cache
+.opencode
 
 # Данные проекта
 output/
 data/
-tmp/
+# tmp/
 
 # Временные файлы downloader (tempfile.mkdtemp(prefix="lec2text_"))
 lec2text_*/
