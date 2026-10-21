@@ -16,7 +16,7 @@ from typing import Literal
 
 import httpx
 
-from .config import PROJECT_ROOT, Settings
+# from .config import PROJECT_ROOT, Settings
 from .errors import AsrApiError, AsrAuthError, AsrRequestError, AsrResponseError
 from .transcriber import Segment, TranscriptResult
 
@@ -181,33 +181,3 @@ def request_with_retries(
             sleep(delay)
 
     raise AssertionError("unreachable")
-
-
-if __name__ == "__main__":
-    settings = Settings.from_env()
-    api_key = settings.groq_api_key
-    if api_key is None or api_key == "":
-        raise SystemExit("Не удалось считать API-ключ. Проверьте .env")
-
-    file_path = PROJECT_ROOT / "output/part90_test.mp3"
-    url = f"{settings.groq_base_url}/audio/transcriptions"
-
-    with httpx.Client(timeout=settings.request_timeout) as client:
-        transcription = request_with_retries(
-            client=client,
-            file_path=file_path,
-            url=url,
-            api_key=api_key,
-            model=settings.asr_model,
-            language=settings.asr_language or "ru",
-            max_attempts=settings.asr_max_attempts,
-            base_delay=settings.asr_retry_base_delay,
-        )
-
-    result = parse_transcription(
-        response=transcription,
-        model=settings.asr_model,
-        requested_language=settings.asr_language or "",
-    )
-    print(f"{result.language}: {len(result.segments)} сегментов")
-    print(result.text[:200])

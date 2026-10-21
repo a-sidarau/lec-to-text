@@ -17,7 +17,7 @@ wheels/
 # Данные проекта
 output/
 data/
-# tmp/
+tmp/
 
 # Временные файлы downloader (tempfile.mkdtemp(prefix="lec2text_"))
 lec2text_*/
@@ -27,6 +27,9 @@ lec2text_*/
 info.json
 *.srt
 *.vtt
+
+# Локальные рабочие заметки
+PLAN.md
 
 # IDE
 .idea/

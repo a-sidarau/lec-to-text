@@ -19,8 +19,8 @@ from dotenv import load_dotenv
 # Корень проекта.
 # __file__ = .../lec_to_text/src/lec_to_text/config.py
 # parents[0] = .../lec_to_text/src/lec_to_text   (пакет)
-# parents[1] = .../lec_to_text/src              (src)
-# parents[2] = .../lec_to_text                  (корень проекта)
+# parents[1] = .../lec_to_text/src               (src)
+# parents[2] = .../lec_to_text                   (корень проекта)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 # ---------------------------------------------------------------------------

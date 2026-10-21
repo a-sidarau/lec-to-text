@@ -16,7 +16,7 @@ if __name__ == "__main__":
     api_key = settings.groq_api_key
     if api_key is None or api_key == "":
         raise SystemExit("Не удалось считать API-ключ. Проверьте .env")
-    video_url = "https://youtu.be/2xNwgReZH4A"
+    video_url = "https://youtu.be/HlBtPyxh-vA"
     asr_url = f"{settings.groq_base_url}/audio/transcriptions"
     language = "ru"
 

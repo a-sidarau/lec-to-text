@@ -4,13 +4,9 @@ version = "0.1.0"
 description = "Локальная утилита: ссылка/файл -> аудио (yt-dlp) -> текст (ASR)"
 requires-python = ">=3.12"
 dependencies = [
-    # yt-dlp[default] тянет yt-dlp-ejs (решение JS-задач YouTube) и прочие extras.
     "yt-dlp[default]>=2026.8.19",
-    # curl_cffi — подмена TLS-отпечатка браузера (impersonation против 403).
     "curl-cffi>=0.16,<0.17",
-    # Чтение .env
     "python-dotenv>=1.2",
-    # Оставлено под ASR-фазу (реализуется отдельно).
     "httpx>=0.28.1",
 ]
 
